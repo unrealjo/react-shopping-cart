@@ -1,6 +1,7 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTocart } from "../store/actions/ProductActions";
 const Products = ({ prod }) => {
+  const Incart = useSelector((state) => state.Incart);
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col gap-1 content-center rounded border-zinc-50 border">
@@ -10,9 +11,10 @@ const Products = ({ prod }) => {
         <span>{prod.price}</span>
       </div>
       <button
-        className=" bg-blue-400 text-center"
-        onClick={() => {
+        className=" bg-blue-400 text-center disabled:bg-slate-400 disabled:text-gray-100"
+        onClick={(e) => {
           dispatch(addTocart(prod.id));
+          e.target.disabled = true;
         }}
       >
         add
