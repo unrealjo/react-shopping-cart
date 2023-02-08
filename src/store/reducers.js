@@ -1,5 +1,10 @@
+import {
+  ADD_TO_CART,
+  DECRMENT_QUANTITY,
+  DELETE_FROM_CART,
+  INCRMENT_QUANTITY,
+} from "./actions/CartActions";
 import data from "./data.json";
-import { INCRMENT_QUANTITY, DECRMENT_QUANTITY } from "./actions/CartActions";
 const initialState = {
   products: data.map((p) => {
     let obj = {
@@ -7,7 +12,6 @@ const initialState = {
       title: p.title,
       price: p.price,
       image: p.thumbnail,
-      // quantity: 0,
     };
     return obj;
   }),
@@ -15,36 +19,36 @@ const initialState = {
 };
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_TO_CART":
+    case ADD_TO_CART:
       return {
         ...state,
         Incart: [
           ...state.Incart,
-          state.products.find((p) => p.id == action.payload),
+          {
+            ...state.products.find((p) => p.id == action.payload),
+            quantity: 1,
+          },
         ],
       };
-    case "DELETE_FROM_CART":
+    case DELETE_FROM_CART:
       return {
         ...state,
-        Incart: [
-          ...state.Incart,
-          state.products.filter((p) => p.id != action.payload),
-        ],
+        Incart: state.Incart.filter((p) => p.id != action.payload),
       };
     case INCRMENT_QUANTITY:
       return {
         ...state,
-        Incart: state.Incart.map((cart) => {
-          if (!!cart?.quantity) return { ...cart, quantity: cart.quantity + 1 };
-          else return { ...cart, quantity: 2 };
+        Incart: state.Incart.map((product) => {
+          if (product.id != action.payload) return product;
+          return { ...product, quantity: product.quantity + 1 };
         }),
       };
     case DECRMENT_QUANTITY:
       return {
         ...state,
-        Incart: state.Incart.map((cart) => {
-          if (!!cart?.quantity) return { ...cart, quantity: cart.quantity - 1 };
-          else return cart;
+        Incart: state.Incart.map((product) => {
+          if (product.id != action.payload) return product;
+          return { ...product, quantity: product.quantity - 1 };
         }),
       };
     default:
