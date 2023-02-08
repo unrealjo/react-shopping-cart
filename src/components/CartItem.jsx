@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import {
   incrementQuantity,
   decrementQuantity,
+  deleteFromCart,
 } from "../store/actions/CartActions";
 function CartItem({ prod }) {
   const dispatch = useDispatch();
@@ -29,7 +30,12 @@ function CartItem({ prod }) {
           -
         </button>
       </div>
-      <button className="p-1 bg-red-600 text-white rounded">Delete</button>
+      <button
+        className="p-1 bg-red-600 text-white rounded"
+        onClick={() => dispatch(deleteFromCart(prod.id))}
+      >
+        Delete
+      </button>
     </div>
   );
 }
